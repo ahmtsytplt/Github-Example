@@ -54,17 +54,13 @@ public class App {
 			connection = (HttpURLConnection) requestUrl.openConnection();
 			connection.setRequestMethod("GET");
 			connection.setConnectTimeout(5000); // if connection is not successfull after 5s, timeout
-			connection.setReadTimeout(5000);
-			// get response
+			
+			// get projects list response
 			String projects = getResponse(connection);
 
 			// if successful, parse the project response
 			JSONArray projectsArray = new JSONArray(projects);
-			
-			if (projectsArray.toString().contains("exceeded")) {
-				writer.write("You passed the request limit (1000 per hour)");
-			}
-			
+						
 			// add project names to list
 			for (int i = 0; i < projectsArray.length(); i++) {
 				projectList.add( projectsArray.getJSONObject(i).get("full_name").toString());
@@ -83,6 +79,7 @@ public class App {
 				JSONArray usernameArray = new JSONArray(userNames);
 
 				for (int i = 0; i < usernameArray.length(); i++) {
+					
 					//usernameList.add( usernameArray.getJSONObject(i).get("full_name").toString());
 					URL userURL = new URL(usernameArray.getJSONObject(i).get("url").toString());
 					
@@ -97,9 +94,10 @@ public class App {
 					String location = profileObject.get("location").toString();
 					String company = profileObject.get("company").toString();
 					int numberOfCommits = (int) usernameArray.getJSONObject(i).get("contributions");
+					
 					//System.out.println(profileObject.get("login"));
 					writeUserInfoToFile(writer, projectName, userName, location, company, numberOfCommits);
-						
+					
 				}	
 			}
 		} catch (Exception e) {
@@ -117,7 +115,6 @@ public class App {
 				e.printStackTrace();
 			}
 			connection.disconnect();
-
 		}
 	}
 
