@@ -10,6 +10,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import org.apache.commons.codec.binary.Base64;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -53,8 +54,15 @@ public class App {
 			// setup connection
 			connection = (HttpURLConnection) requestUrl.openConnection();
 			connection.setRequestMethod("GET");
-			connection.setConnectTimeout(5000); // if connection is not successfull after 5s, timeout
-			connection.setReadTimeout(5000);
+			connection.setConnectTimeout(10000); // if connection is not successfull after 5s, timeout
+			connection.setReadTimeout(10000);
+			
+			String token = "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";
+			token = token + ":x-oauth-basic";
+			String authString = "Basic " + Base64.encodeBase64String(token.getBytes());
+			
+			connection.setRequestProperty("Authorization", authString);
+			
 			// get response
 			String projects = getResponse(connection);
 
