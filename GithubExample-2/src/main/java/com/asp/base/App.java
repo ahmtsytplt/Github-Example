@@ -38,6 +38,7 @@ public class App {
 			File userInfoFile = new File("statistics.txt");
 			if (userInfoFile.createNewFile()) {
 				System.out.println("File created: " + userInfoFile.getName());
+				System.out.println("Please wait.");
 			} else {
 				userInfoFile.delete();
 				userInfoFile.createNewFile();
