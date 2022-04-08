@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.asp.bean.User;
+
 public class App {
 
 	private static HttpURLConnection connection;
@@ -31,6 +33,8 @@ public class App {
 		final String committersInfoURLTail = "/contributors?per_page=10";
 		
 		BufferedWriter writer = null;
+		
+		User currentUser = new User();
 		
 		try {
 
@@ -90,13 +94,14 @@ public class App {
 					String userInfo = getResponse(connection);
 					
 					JSONObject profileObject = new JSONObject(userInfo);
-					String userName = profileObject.get("login").toString();
-					String location = profileObject.get("location").toString();
-					String company = profileObject.get("company").toString();
-					int numberOfCommits = (int) usernameArray.getJSONObject(i).get("contributions");
+					
+					currentUser.setUsername(profileObject.get("login").toString());
+					currentUser.setLocation(profileObject.get("location").toString());
+					currentUser.setCompany(profileObject.get("company").toString());
+					currentUser.setNumberOfContributions(Integer.valueOf(usernameArray.getJSONObject(i).get("contributions").toString()));
 					
 					//System.out.println(profileObject.get("login"));
-					writeUserInfoToFile(writer, projectName, userName, location, company, numberOfCommits);
+					writeUserInfoToFile(writer, projectName, currentUser.toString());
 					
 				}	
 			}
@@ -144,12 +149,10 @@ public class App {
 		return responseContent.toString();
 	}
 
-	public static void writeUserInfoToFile(BufferedWriter writer, String projectName, String username, String location, String company, int numberOfCommits) throws IOException {
+	public static void writeUserInfoToFile(BufferedWriter writer, String projectName, String userInfo) throws IOException {
 		writer.append("repo: " + projectName + " - ");
-		writer.append("user: " + username + ", ");
-		writer.append("location: " + location + ", ");
-		writer.append("company: " + company + ", ");
-		writer.append("contributions: " + numberOfCommits + "\n");
+		writer.append(userInfo);
+		writer.append("\n");
 	}
 
 }
