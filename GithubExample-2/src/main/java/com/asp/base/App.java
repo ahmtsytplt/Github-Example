@@ -24,7 +24,7 @@ public class App {
 		ArrayList<String> projectList = new ArrayList<>();
 
 		// to get repository names
-		final String repositoryInfoURL = "https://api.github.com/orgs/apache/repos";
+		final String repositoryInfoURL = "https://api.github.com/orgs/apache/repos?sort=updated&direction=desc";
 
 		// to get repository contributers' name
 		final String committersInfoURLHead = "https://api.github.com/repos/";
@@ -106,7 +106,6 @@ public class App {
 			try {
 				writer.append(e.toString());
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			
@@ -114,7 +113,6 @@ public class App {
 			try {
 				writer.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			connection.disconnect();
